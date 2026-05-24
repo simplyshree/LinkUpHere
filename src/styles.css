@@ -181,7 +181,3 @@
   animation: shimmer-text 6s ease-in-out infinite;
 }
 
-@utility hover-pop {
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
-}
-@utility hover-pop:hover { transform: translateY(-4px) scale(1.02); }
