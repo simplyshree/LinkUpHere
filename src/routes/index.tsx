@@ -243,7 +243,6 @@ function EventCard({
           ) : (
             <Link
               to="/auth"
-              search={{ next: "/" }}
               className="rounded-full px-4 py-1.5 text-xs font-semibold bg-primary text-primary-foreground shadow-pop hover:opacity-90"
             >
               Sign in to join
