@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Linkup — Campus events & friend matching" },
       { name: "description", content: "Discover workshops, events and meetups on campus, register your interest, and get matched with classmates who share your vibe." },
-      { property: "og:title", content: "Linkup — Find your campus crew" },
+      { property: "og:title", content: "Linkup : Find your campus crew" },
       { property: "og:description", content: "Find your people on campus." },
     ],
   }),
@@ -270,7 +270,7 @@ function MatchTeaser() {
             Match with people who get you.
           </h2>
           <p className="mt-4 text-base sm:text-lg opacity-95">
-            Pick a few interests, sign up for events that look fun, and we'll rank classmates by what you share — interests, plans, energy.
+            Pick a few interests, sign up for events that look fun, and we'll rank classmates by what you share : interests, plans, energy.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             {user ? (
