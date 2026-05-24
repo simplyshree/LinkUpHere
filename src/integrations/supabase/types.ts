@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      event_interests: {
+        Row: {
+          created_at: string
+          event_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_interests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      events: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          emoji: string
+          host: string
+          id: string
+          interests: string[]
+          location: string
+          starts_at: string
+          title: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          emoji?: string
+          host?: string
+          id?: string
+          interests?: string[]
+          location: string
+          starts_at: string
+          title: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          emoji?: string
+          host?: string
+          id?: string
+          interests?: string[]
+          location?: string
+          starts_at?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_emoji: string | null
+          bio: string | null
+          created_at: string
+          display_name: string
+          id: string
+          interests: string[]
+          year: string | null
+        }
+        Insert: {
+          avatar_emoji?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name: string
+          id: string
+          interests?: string[]
+          year?: string | null
+        }
+        Update: {
+          avatar_emoji?: string | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          interests?: string[]
+          year?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
