@@ -94,11 +94,5 @@ Run the migrations against a Supabase project before using the app end-to-end.
 - Add a live deployment link here when available.
 - Choose and add a license before inviting external reuse.
 
-## Repository Naming
 
-Intended public repository name: `llinkup`.
-
-If the GitHub repository still appears as `campus-connect`, rename it in GitHub under:
-
-`Settings -> General -> Repository name`
 
