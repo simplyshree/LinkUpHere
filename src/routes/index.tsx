@@ -55,14 +55,14 @@ function Hero() {
         <div className="animate-pop-in">
           <div className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            Live on your campus this week
+            Campus-only · Verified students
           </div>
           <h1 className="mt-4 font-display text-5xl sm:text-7xl font-bold leading-[1] tracking-tight">
-            Find your <span className="shimmer-sunset">people.</span><br />
-            Show up <em className="not-italic shimmer-sunset">together.</em>
+            LinkUp with your <span className="shimmer-sunset">campus.</span><br />
+            Skip the <em className="not-italic shimmer-sunset">noise.</em>
           </h1>
           <p className="mt-5 max-w-xl text-base sm:text-lg text-muted-foreground">
-            Browse what's happening on campus, tap the events you're into, and we'll match you with classmates who share your vibe. <span className="font-semibold text-foreground">Free to explore — no sign-in needed.</span>
+            Only what's happening near you — workshops, clubs, meetups. Register once, get just <span className="font-semibold text-foreground">two reminder emails</span>, and match with classmates who share your interests. <span className="font-semibold text-foreground">University ID verified. Free to explore.</span>
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <a href="#events" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-90 transition inline-flex items-center gap-2">
