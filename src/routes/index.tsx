@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
-import { MascotPeach, MascotStar, MascotCloud, MascotHeart, Sparkle } from "@/components/mascots";
+import { MascotHeart, MascotStar, Sparkle } from "@/components/mascots";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -42,19 +42,42 @@ function HomePage() {
 }
 
 function Hero() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const onMove = (e: MouseEvent) => {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      setTilt({
+        x: Math.max(-1, Math.min(1, (e.clientX - cx) / (r.width / 2))),
+        y: Math.max(-1, Math.min(1, (e.clientY - cy) / (r.height / 2))),
+      });
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  const tx = tilt.x * 14;
+  const ty = tilt.y * 14;
+
   return (
-    <section className="relative overflow-hidden">
-      {/* Floating blobs */}
+    <section ref={wrapRef} className="relative overflow-hidden">
+      {/* Ambient chrome glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-10 -left-10 w-72 h-72 bg-coral/40 animate-blob blur-2xl" />
-        <div className="absolute top-32 right-0 w-80 h-80 bg-primary/25 animate-blob blur-3xl" style={{ animationDelay: "-3s" }} />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-cream animate-blob blur-2xl" style={{ animationDelay: "-6s" }} />
+        <div className="absolute top-1/4 left-10 w-96 h-96 rounded-full bg-white/5 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-10 w-96 h-96 rounded-full bg-white/5 blur-[120px]" />
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/15 to-transparent rotate-[-8deg] scale-150" />
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-[8deg] scale-150" />
       </div>
 
       <div className="mx-auto max-w-5xl px-4 pt-12 sm:pt-20 pb-12 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-8 items-center">
         <div className="animate-pop-in">
-          <div className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 backdrop-blur px-3 py-1 text-xs font-medium text-foreground/80">
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Campus-only · Verified students
           </div>
           <h1 className="mt-4 font-display text-5xl sm:text-7xl font-bold leading-[1] tracking-tight">
@@ -65,28 +88,87 @@ function Hero() {
             Only what's happening near you — workshops, clubs, meetups. Register once, get just <span className="font-semibold text-foreground">two reminder emails</span>, and match with classmates who share your interests. <span className="font-semibold text-foreground">University ID verified. Free to explore.</span>
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href="#events" className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-pop hover:opacity-90 transition inline-flex items-center gap-2">
+            <a href="#events" className="group relative overflow-hidden rounded-full bg-gradient-to-b from-white to-zinc-300 text-black px-6 py-3 text-sm font-semibold shadow-pop border-t border-white hover:scale-105 transition inline-flex items-center gap-2">
               <Sparkle className="w-4 h-4" /> Explore events
+              <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
             </a>
-            <a href="#match" className="rounded-full bg-card border border-border px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition">
+            <a href="#match" className="rounded-full border border-white/20 bg-white/5 backdrop-blur px-6 py-3 text-sm font-semibold text-foreground hover:bg-white/10 transition">
               Find friends →
             </a>
           </div>
         </div>
 
-        {/* Mascot cluster */}
-        <div className="relative h-72 md:h-80" aria-hidden>
-          <div className="absolute top-0 right-8 w-32 animate-float">
-            <MascotPeach className="w-full drop-shadow-xl" />
-          </div>
-          <div className="absolute bottom-4 left-2 w-28 animate-float" style={{ animationDelay: "-1.5s" }}>
-            <MascotStar className="w-full drop-shadow-xl" />
-          </div>
-          <div className="absolute top-20 left-16 w-36 animate-float" style={{ animationDelay: "-2.8s" }}>
-            <MascotCloud className="w-full drop-shadow-xl" />
-          </div>
-          <div className="absolute bottom-10 right-0 w-20 animate-heartbeat">
-            <MascotHeart className="w-full drop-shadow-xl" />
+        {/* Interactive Chrome Globe */}
+        <div className="relative h-80 md:h-96 flex items-center justify-center" aria-hidden>
+          <div
+            className="relative"
+            style={{
+              transform: `perspective(900px) rotateY(${tx * 0.6}deg) rotateX(${-ty * 0.6}deg)`,
+              transition: "transform 120ms ease-out",
+            }}
+          >
+            {/* halo */}
+            <div className="absolute inset-0 blur-3xl bg-white/15 rounded-full scale-110" />
+            {/* sphere */}
+            <div
+              className="relative w-56 h-56 md:w-72 md:h-72 rounded-full"
+              style={{
+                background: "radial-gradient(circle at 30% 25%, #fafafa 0%, #a1a1aa 40%, #3f3f46 80%, #18181b 100%)",
+                boxShadow: "inset -22px -22px 60px rgba(0,0,0,0.85), inset 20px 20px 50px rgba(255,255,255,0.35), 0 30px 60px -12px rgba(0,0,0,0.7)",
+              }}
+            >
+              {/* highlight */}
+              <div className="absolute top-[10%] left-[15%] w-[40%] h-[25%] bg-white/60 rounded-full blur-2xl rotate-[-35deg]" />
+              <div className="absolute bottom-[15%] right-[18%] w-[30%] h-[15%] bg-black/50 rounded-full blur-lg" />
+              {/* rotating meridian shine */}
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <div
+                  className="absolute inset-[-10%] animate-spin-slow"
+                  style={{
+                    background: "conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.4) 60deg, transparent 120deg, transparent 240deg, rgba(255,255,255,0.2) 300deg, transparent 360deg)",
+                    mixBlendMode: "overlay",
+                  }}
+                />
+              </div>
+              {/* inner ring */}
+              <div className="absolute inset-3 rounded-full border border-white/15" />
+            </div>
+
+            {/* Orbiting droplets */}
+            <div
+              className="absolute -top-6 -left-8 w-14 h-14 rounded-full backdrop-blur-md border border-white/40 animate-drift"
+              style={{
+                background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.7), rgba(255,255,255,0.05) 60%)",
+                boxShadow: "inset 3px 3px 6px rgba(255,255,255,0.6), 6px 10px 20px rgba(0,0,0,0.5)",
+                transform: `translate(${tx * -18}px, ${ty * -18}px)`,
+              }}
+            />
+            <div
+              className="absolute top-1/2 -right-10 w-10 h-10 rounded-full backdrop-blur-sm border border-white/30 animate-drift"
+              style={{
+                background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.65), rgba(255,255,255,0.05) 60%)",
+                boxShadow: "inset 2px 2px 5px rgba(255,255,255,0.5), 4px 8px 16px rgba(0,0,0,0.55)",
+                transform: `translate(${tx * 22}px, ${ty * 22}px)`,
+                animationDelay: "-1.5s",
+              }}
+            />
+            <div
+              className="absolute -bottom-8 left-1/4 w-12 h-12 rounded-full backdrop-blur-lg border border-white/35 animate-drift"
+              style={{
+                background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.6), rgba(255,255,255,0.05) 60%)",
+                boxShadow: "inset 3px 3px 6px rgba(255,255,255,0.55), 6px 10px 20px rgba(0,0,0,0.5)",
+                transform: `translate(${tx * 12}px, ${ty * -12}px)`,
+                animationDelay: "-3s",
+              }}
+            />
+            <div
+              className="absolute -top-2 right-4 w-6 h-6 rounded-full backdrop-blur border border-white/30"
+              style={{
+                background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.75), rgba(255,255,255,0.05) 60%)",
+                boxShadow: "inset 2px 2px 4px rgba(255,255,255,0.6), 3px 6px 12px rgba(0,0,0,0.4)",
+                transform: `translate(${tx * -8}px, ${ty * -20}px)`,
+              }}
+            />
           </div>
         </div>
       </div>
@@ -296,9 +378,9 @@ function FooterCTA() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 text-center">
       <div className="inline-flex gap-4 mb-4">
-        <div className="w-12 animate-float"><MascotPeach className="w-full" /></div>
-        <div className="w-12 animate-float" style={{ animationDelay: "-1s" }}><MascotCloud className="w-full" /></div>
-        <div className="w-12 animate-float" style={{ animationDelay: "-2s" }}><MascotStar className="w-full" /></div>
+        <div className="w-12 animate-float"><MascotHeart className="w-full" /></div>
+        <div className="w-12 animate-float" style={{ animationDelay: "-1s" }}><MascotStar className="w-full" /></div>
+        <div className="w-12 animate-float" style={{ animationDelay: "-2s" }}><MascotHeart className="w-full" /></div>
       </div>
       <h3 className="font-display text-2xl sm:text-3xl font-bold">Campus is more fun with friends.</h3>
       <p className="mt-2 text-muted-foreground text-sm">Free to explore — sign in only when you want to join an event or get matched.</p>
