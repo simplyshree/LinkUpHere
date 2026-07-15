@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
-import { MascotPeach, MascotStar, MascotCloud, MascotHeart, Sparkle } from "@/components/mascots";
+import { MascotHeart, MascotStar, Sparkle } from "@/components/mascots";
 
 export const Route = createFileRoute("/")({
   head: () => ({
