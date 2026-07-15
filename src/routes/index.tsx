@@ -378,9 +378,9 @@ function FooterCTA() {
   return (
     <section className="mx-auto max-w-5xl px-4 py-16 text-center">
       <div className="inline-flex gap-4 mb-4">
-        <div className="w-12 animate-float"><MascotPeach className="w-full" /></div>
-        <div className="w-12 animate-float" style={{ animationDelay: "-1s" }}><MascotCloud className="w-full" /></div>
-        <div className="w-12 animate-float" style={{ animationDelay: "-2s" }}><MascotStar className="w-full" /></div>
+        <div className="w-12 animate-float"><MascotHeart className="w-full" /></div>
+        <div className="w-12 animate-float" style={{ animationDelay: "-1s" }}><MascotStar className="w-full" /></div>
+        <div className="w-12 animate-float" style={{ animationDelay: "-2s" }}><MascotHeart className="w-full" /></div>
       </div>
       <h3 className="font-display text-2xl sm:text-3xl font-bold">Campus is more fun with friends.</h3>
       <p className="mt-2 text-muted-foreground text-sm">Free to explore — sign in only when you want to join an event or get matched.</p>
