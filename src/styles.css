@@ -176,15 +176,24 @@
 @utility animate-heartbeat { animation: heartbeat 1.2s ease-in-out infinite; }
 
 @utility shimmer-sunset {
-  background-image: linear-gradient(90deg, oklch(0.45 0.14 250), oklch(0.72 0.12 200), oklch(0.9 0.04 240), oklch(0.72 0.12 200), oklch(0.45 0.14 250));
-  background-size: 200% 100%;
+  background-image: linear-gradient(180deg, #ffffff 0%, #d4d4d8 45%, #ffffff 50%, #71717a 65%, #52525b 100%);
+  background-size: 100% 200%;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   animation: shimmer-text 6s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.5));
 }
 
 @utility bg-chrome {
-  background-image: linear-gradient(135deg, oklch(0.98 0.005 240) 0%, oklch(0.88 0.02 240) 25%, oklch(0.95 0.01 240) 50%, oklch(0.82 0.03 240) 75%, oklch(0.98 0.005 240) 100%);
+  background-image: linear-gradient(135deg, #f4f4f5 0%, #a1a1aa 25%, #e4e4e7 50%, #71717a 75%, #f4f4f5 100%);
 }
+
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes drift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(12px,-18px) scale(1.08); }
+}
+@utility animate-spin-slow { animation: spin-slow 24s linear infinite; }
+@utility animate-drift { animation: drift 7s ease-in-out infinite; }
 
