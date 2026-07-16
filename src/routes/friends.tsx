@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { getMyMatches } from "@/lib/matches.functions";
 
 export const Route = createFileRoute("/friends")({
   head: () => ({ meta: [{ title: "Your matches — Linkup" }] }),
