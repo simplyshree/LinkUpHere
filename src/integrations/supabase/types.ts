@@ -124,8 +124,8 @@ export type Database = {
           event_id: string
         }[]
       }
-      get_my_matches: {
-        Args: never
+      get_matches_for: {
+        Args: { _user_id: string }
         Returns: {
           avatar_emoji: string
           display_name: string

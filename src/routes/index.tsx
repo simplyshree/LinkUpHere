@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 import { MascotHeart, MascotStar, Sparkle } from "@/components/mascots";
+import { getEventInterestCounts } from "@/lib/matches.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -180,6 +182,7 @@ function EventsSection() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState<string>("all");
+  const fetchCounts = useServerFn(getEventInterestCounts);
 
   const eventsQ = useQuery({
     queryKey: ["events"],
@@ -194,10 +197,9 @@ function EventsSection() {
   const countsQ = useQuery({
     queryKey: ["event-counts"],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_event_interest_counts");
-      if (error) throw error;
+      const data = await fetchCounts();
       const map = new Map<string, number>();
-      for (const row of (data ?? []) as { event_id: string; count: number }[]) {
+      for (const row of data) {
         map.set(row.event_id, Number(row.count));
       }
       return map;

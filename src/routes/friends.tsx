@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import { getMyMatches } from "@/lib/matches.functions";
 
 export const Route = createFileRoute("/friends")({
   head: () => ({ meta: [{ title: "Your matches — Linkup" }] }),
@@ -23,6 +25,7 @@ interface Match {
 function FriendsPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const fetchMatches = useServerFn(getMyMatches);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
@@ -46,9 +49,8 @@ function FriendsPage() {
     enabled: !!user,
     queryKey: ["matches", user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_my_matches");
-      if (error) throw error;
-      return ((data ?? []) as Match[]).map((m) => ({
+      const data = await fetchMatches();
+      return (data as Match[]).map((m) => ({
         ...m,
         shared_event_count: Number(m.shared_event_count),
       }));
