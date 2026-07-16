@@ -25,6 +25,7 @@ interface Match {
 function FriendsPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const fetchMatches = useServerFn(getMyMatches);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth" });
