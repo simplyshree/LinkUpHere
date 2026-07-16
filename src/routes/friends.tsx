@@ -49,9 +49,8 @@ function FriendsPage() {
     enabled: !!user,
     queryKey: ["matches", user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_my_matches");
-      if (error) throw error;
-      return ((data ?? []) as Match[]).map((m) => ({
+      const data = await fetchMatches();
+      return (data as Match[]).map((m) => ({
         ...m,
         shared_event_count: Number(m.shared_event_count),
       }));
