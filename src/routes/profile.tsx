@@ -61,7 +61,7 @@ function ProfilePage() {
       qc.invalidateQueries({ queryKey: ["profile", user!.id] });
       qc.invalidateQueries({ queryKey: ["matches", user!.id] });
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => { console.error(e); toast.error("Couldn't save your profile. Please try again."); },
   });
 
   if (loading || !user) return <main className="px-4 py-20 text-center text-muted-foreground">Loading…</main>;
