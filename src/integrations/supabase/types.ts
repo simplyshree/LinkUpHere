@@ -114,29 +114,37 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      event_interest_counts: {
+        Row: {
+          count: number | null
+          event_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_interests_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      my_matches: {
+        Row: {
+          avatar_emoji: string | null
+          display_name: string | null
+          id: string | null
+          interests: string[] | null
+          score: number | null
+          shared_event_count: number | null
+          shared_interests: string[] | null
+          year: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      get_event_interest_counts: {
-        Args: never
-        Returns: {
-          count: number
-          event_id: string
-        }[]
-      }
-      get_my_matches: {
-        Args: never
-        Returns: {
-          avatar_emoji: string
-          display_name: string
-          id: string
-          interests: string[]
-          score: number
-          shared_event_count: number
-          shared_interests: string[]
-          year: string
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
