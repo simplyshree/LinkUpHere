@@ -117,7 +117,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_event_interest_counts: {
+        Args: never
+        Returns: {
+          count: number
+          event_id: string
+        }[]
+      }
+      get_my_matches: {
+        Args: never
+        Returns: {
+          avatar_emoji: string
+          display_name: string
+          id: string
+          interests: string[]
+          score: number
+          shared_event_count: number
+          shared_interests: string[]
+          year: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
