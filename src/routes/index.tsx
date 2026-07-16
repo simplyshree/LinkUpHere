@@ -182,6 +182,7 @@ function EventsSection() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState<string>("all");
+  const fetchCounts = useServerFn(getEventInterestCounts);
 
   const eventsQ = useQuery({
     queryKey: ["events"],
@@ -196,10 +197,9 @@ function EventsSection() {
   const countsQ = useQuery({
     queryKey: ["event-counts"],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_event_interest_counts");
-      if (error) throw error;
+      const data = await fetchCounts();
       const map = new Map<string, number>();
-      for (const row of (data ?? []) as { event_id: string; count: number }[]) {
+      for (const row of data) {
         map.set(row.event_id, Number(row.count));
       }
       return map;
